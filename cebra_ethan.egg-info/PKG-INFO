@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: cebra_ethan
+Version: 0.1.0
+Summary: CEBRA-Ethan: 个人改进版的CEBRA库，用于神经科学数据的自监督学习和嵌入
+Home-page: https://github.com/yourusername/CEBRA-Ethan
+Author: Ethan
+Author-email: your.email@example.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.7
+Requires-Dist: numpy>=1.19.0
+Requires-Dist: matplotlib>=3.3.0
+Requires-Dist: tqdm>=4.50.0
