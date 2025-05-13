@@ -6,7 +6,9 @@
 
 CEBRA-Ethan是对[CEBRA](https://github.com/AdaptiveMotorControlLab/CEBRA)（Consistent EmBeddings of high-dimensional Recordings using Auxiliary variables）库的个人改进版本，用于神经科学数据的自监督学习和嵌入。
 
-本项目在原始CEBRA库的基础上进行了多项改进：
+本项目在原始CEBRA库的基础上进行了多项改进，并复现了论文"Learnable latent embeddings for joint behavioural and neural analysis"中的主要实验。
+
+### 框架改进
 
 1. **模型改进**：
    - 添加了基于注意力机制的模型（AttentionOffsetModel），以更好地捕获特征之间的关系
@@ -23,6 +25,22 @@ CEBRA-Ethan是对[CEBRA](https://github.com/AdaptiveMotorControlLab/CEBRA)（Con
 4. **数据处理改进**：
    - 优化了数据加载和批处理逻辑，提高了训练效率
    - 添加了多目标学习的支持，可以同时学习时间和行为相关的嵌入
+
+### 论文实验复现
+
+本项目复现了以下实验：
+
+1. **合成数据验证实验**：使用人工合成的神经元活动数据测试CEBRA重构真实潜在空间的能力，并与t-SNE、UMAP、pi-VAE和autoLFADS等方法进行比较。
+
+2. **大鼠海马体数据分析**：使用Grosmark与Buzsáki 2016年收集的大鼠线性轨道实验数据，评估不同算法生成的潜在空间在不同大鼠之间的一致性，进行假设驱动分析和发现驱动分析，使用拓扑数据分析验证嵌入的拓扑结构稳健性，比较位置解码性能。
+
+3. **灵长类运动任务潜在动态分析**：使用灵长类体感皮质(S1)八方向中心外运动任务的电生理记录数据，分析主动和被动运动对神经群体活动的影响，测试位置、方向和主动/被动状态的解码性能。
+
+4. **跨模态一致嵌入分析**：使用Allen Brain Observatory数据集的钙成像和Neuropixels记录，将视频特征作为"行为"标签用于训练CEBRA模型，验证不同记录方法是否产生类似的潜在表示，测试联合训练对跨模态一致性的影响，分析不同视觉区域内部和区域间的一致性。
+
+5. **自然视频从皮层解码实验**：使用CEBRA模型解码小鼠视觉皮层观看的自然视频，比较单帧和多帧输入的解码性能，分析不同视觉区域和不同皮层层次的视频解码能力。
+
+6. **多会话、多动物CEBRA训练**：联合训练跨会话和不同动物的数据，研究联合训练对嵌入一致性的提升，测试预训练模型在新动物数据上的快速适应能力。
 
 ## 快速开始
 
@@ -99,6 +117,60 @@ CEBRA-Ethan在保持原始CEBRA核心功能的同时，添加了多项改进：
 | 数据增强 | 有限 | 增强 |
 | 多目标学习 | ✅ | 改进 |
 | 代码结构 | 复杂 | 简化 |
+
+## 项目结构
+
+```
+CEBRA-Ethan/
+├── cebra_ethan/           # CEBRA-Ethan框架实现
+│   ├── data/              # 数据处理模块
+│   ├── models/            # 模型实现
+│   ├── solver/            # 求解器实现
+│   └── utils/             # 工具函数
+├── experiments/           # 实验实现
+│   ├── synthetic/         # 合成数据验证实验
+│   ├── hippocampus/       # 大鼠海马体数据分析
+│   ├── primate/           # 灵长类运动任务潜在动态分析
+│   ├── allen/             # 跨模态一致嵌入分析
+│   ├── video_decoding/    # 自然视频从皮层解码实验
+│   └── multi_session/     # 多会话、多动物CEBRA训练
+├── examples/              # 使用示例
+├── config.py              # 配置文件
+├── data_loader.py         # 数据加载模块
+├── utils.py               # 工具函数
+├── run_all_experiments.py # 运行所有实验的主脚本
+└── README.md              # 项目说明
+```
+
+## 运行实验
+
+运行单个实验：
+
+```bash
+# 运行合成数据验证实验
+python -m experiments.synthetic.run_experiment
+
+# 运行大鼠海马体数据分析
+python -m experiments.hippocampus.run_experiment
+
+# 运行灵长类运动任务潜在动态分析
+python -m experiments.primate.run_experiment
+
+# 运行跨模态一致嵌入分析
+python -m experiments.allen.run_experiment
+
+# 运行自然视频从皮层解码实验
+python -m experiments.video_decoding.run_experiment
+
+# 运行多会话、多动物CEBRA训练
+python -m experiments.multi_session.run_experiment
+```
+
+运行所有实验：
+
+```bash
+python run_all_experiments.py
+```
 
 ## 参考文献
 
