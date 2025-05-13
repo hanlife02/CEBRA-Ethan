@@ -1,24 +1,27 @@
 # CEBRA-Ethan
 
-《神经网络的计算基础》24-25学年春季学期课程 期末论文复现作业
+《神经网络的计算基础》24-25 学年春季学期课程 期末论文复现
 
 ## 项目概述
 
-CEBRA-Ethan是对[CEBRA](https://github.com/AdaptiveMotorControlLab/CEBRA)（Consistent EmBeddings of high-dimensional Recordings using Auxiliary variables）库的个人改进版本，用于神经科学数据的自监督学习和嵌入。
+CEBRA-Ethan 是对[CEBRA](https://github.com/AdaptiveMotorControlLab/CEBRA)（Consistent EmBeddings of high-dimensional Recordings using Auxiliary variables）库的个人改进版本，用于神经科学数据的自监督学习和嵌入。
 
-本项目在原始CEBRA库的基础上进行了多项改进，并复现了论文"Learnable latent embeddings for joint behavioural and neural analysis"中的主要实验。
+本项目在原始 CEBRA 库的基础上进行了多项改进，并复现了论文"Learnable latent embeddings for joint behavioural and neural analysis"中的主要实验。
 
 ### 框架改进
 
 1. **模型改进**：
+
    - 添加了基于注意力机制的模型（AttentionOffsetModel），以更好地捕获特征之间的关系
    - 优化了模型架构，提高了训练效率和嵌入质量
 
 2. **损失函数改进**：
-   - 实现了焦点损失（Focal Loss）版本的InfoNCE，更加关注难以区分的样本对
-   - 保留了原始CEBRA的所有损失函数，确保兼容性
+
+   - 实现了焦点损失（Focal Loss）版本的 InfoNCE，更加关注难以区分的样本对
+   - 保留了原始 CEBRA 的所有损失函数，确保兼容性
 
 3. **训练过程改进**：
+
    - 添加了早停机制，避免过拟合并减少训练时间
    - 实现了数据增强策略，提高模型的鲁棒性
 
@@ -30,17 +33,17 @@ CEBRA-Ethan是对[CEBRA](https://github.com/AdaptiveMotorControlLab/CEBRA)（Con
 
 本项目复现了以下实验：
 
-1. **合成数据验证实验**：使用人工合成的神经元活动数据测试CEBRA重构真实潜在空间的能力，并与t-SNE、UMAP、pi-VAE和autoLFADS等方法进行比较。
+1. **合成数据验证实验**：使用人工合成的神经元活动数据测试 CEBRA 重构真实潜在空间的能力，并与 t-SNE、UMAP、pi-VAE 和 autoLFADS 等方法进行比较。
 
-2. **大鼠海马体数据分析**：使用Grosmark与Buzsáki 2016年收集的大鼠线性轨道实验数据，评估不同算法生成的潜在空间在不同大鼠之间的一致性，进行假设驱动分析和发现驱动分析，使用拓扑数据分析验证嵌入的拓扑结构稳健性，比较位置解码性能。
+2. **大鼠海马体数据分析**：使用 Grosmark 与 Buzsáki 2016 年收集的大鼠线性轨道实验数据，评估不同算法生成的潜在空间在不同大鼠之间的一致性，进行假设驱动分析和发现驱动分析，使用拓扑数据分析验证嵌入的拓扑结构稳健性，比较位置解码性能。
 
 3. **灵长类运动任务潜在动态分析**：使用灵长类体感皮质(S1)八方向中心外运动任务的电生理记录数据，分析主动和被动运动对神经群体活动的影响，测试位置、方向和主动/被动状态的解码性能。
 
-4. **跨模态一致嵌入分析**：使用Allen Brain Observatory数据集的钙成像和Neuropixels记录，将视频特征作为"行为"标签用于训练CEBRA模型，验证不同记录方法是否产生类似的潜在表示，测试联合训练对跨模态一致性的影响，分析不同视觉区域内部和区域间的一致性。
+4. **跨模态一致嵌入分析**：使用 Allen Brain Observatory 数据集的钙成像和 Neuropixels 记录，将视频特征作为"行为"标签用于训练 CEBRA 模型，验证不同记录方法是否产生类似的潜在表示，测试联合训练对跨模态一致性的影响，分析不同视觉区域内部和区域间的一致性。
 
-5. **自然视频从皮层解码实验**：使用CEBRA模型解码小鼠视觉皮层观看的自然视频，比较单帧和多帧输入的解码性能，分析不同视觉区域和不同皮层层次的视频解码能力。
+5. **自然视频从皮层解码实验**：使用 CEBRA 模型解码小鼠视觉皮层观看的自然视频，比较单帧和多帧输入的解码性能，分析不同视觉区域和不同皮层层次的视频解码能力。
 
-6. **多会话、多动物CEBRA训练**：联合训练跨会话和不同动物的数据，研究联合训练对嵌入一致性的提升，测试预训练模型在新动物数据上的快速适应能力。
+6. **多会话、多动物 CEBRA 训练**：联合训练跨会话和不同动物的数据，研究联合训练对嵌入一致性的提升，测试预训练模型在新动物数据上的快速适应能力。
 
 ## 快速开始
 
@@ -80,20 +83,23 @@ embeddings = solver.transform(torch.tensor(neural_data, dtype=torch.float32))
 
 ## 主要组件
 
-CEBRA-Ethan包含以下主要组件：
+CEBRA-Ethan 包含以下主要组件：
 
 1. **模型（Models）**：
-   - `Offset10Model`：具有10个样本感受野的模型
-   - `Offset5Model`：具有5个样本感受野的模型
+
+   - `Offset10Model`：具有 10 个样本感受野的模型
+   - `Offset5Model`：具有 5 个样本感受野的模型
    - `Offset1Model`：具有单个样本感受野的模型
    - `AttentionOffsetModel`：带有注意力机制的改进模型
 
 2. **损失函数（Criterions）**：
-   - `LearnableCosineInfoNCE`：具有可学习温度的余弦相似度InfoNCE
-   - `LearnableEuclideanInfoNCE`：具有可学习温度的欧几里得相似度InfoNCE
-   - `FocalInfoNCE`：带有焦点损失的InfoNCE
+
+   - `LearnableCosineInfoNCE`：具有可学习温度的余弦相似度 InfoNCE
+   - `LearnableEuclideanInfoNCE`：具有可学习温度的欧几里得相似度 InfoNCE
+   - `FocalInfoNCE`：带有焦点损失的 InfoNCE
 
 3. **求解器（Solvers）**：
+
    - `SingleSessionSolver`：标准单会话求解器
    - `EarlyStoppingSolver`：带有早停机制的求解器
 
@@ -105,18 +111,18 @@ CEBRA-Ethan包含以下主要组件：
    - `AugmentedContrastiveLoader`：带有数据增强的加载器
    - `MultiObjectiveLoader`：用于多目标学习的加载器
 
-## 与原始CEBRA的比较
+## 与原始 CEBRA 的比较
 
-CEBRA-Ethan在保持原始CEBRA核心功能的同时，添加了多项改进：
+CEBRA-Ethan 在保持原始 CEBRA 核心功能的同时，添加了多项改进：
 
-| 特性 | 原始CEBRA | CEBRA-Ethan |
-|------|-----------|-------------|
-| 注意力机制 | ❌ | ✅ |
-| 焦点损失 | ❌ | ✅ |
-| 早停机制 | ❌ | ✅ |
-| 数据增强 | 有限 | 增强 |
-| 多目标学习 | ✅ | 改进 |
-| 代码结构 | 复杂 | 简化 |
+| 特性       | 原始 CEBRA | CEBRA-Ethan |
+| ---------- | ---------- | ----------- |
+| 注意力机制 | ❌         | ✅          |
+| 焦点损失   | ❌         | ✅          |
+| 早停机制   | ❌         | ✅          |
+| 数据增强   | 有限       | 增强        |
+| 多目标学习 | ✅         | 改进        |
+| 代码结构   | 复杂       | 简化        |
 
 ## 项目结构
 
